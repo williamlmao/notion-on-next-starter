@@ -22,6 +22,9 @@ export interface NotionOnNextPageObjectResponse extends PageObjectResponse {
   coverImage: string | undefined;
 }
 
+/**
+ * This is a cached function that fetches all pages from a Notion database.
+ */
 export const getPages = cache(async (databaseId: string) => {
   const response = await notion.databases.query({
     database_id: databaseId as string,
@@ -29,6 +32,10 @@ export const getPages = cache(async (databaseId: string) => {
   return response.results;
 });
 
+/**
+ * This function pulls out the required types for notion-on-next: slug, title, and cover image to make these properties more accessible.
+ * It also accepts a generic type which is meant to be passed down from getParsedPages, but can be used elsewhere.
+ */
 export const parsePages = cache(
   async <Type>(
     pages: (PageObjectResponse | PartialPageObjectResponse)[]
@@ -64,6 +71,11 @@ export const parsePages = cache(
   }
 );
 
+/**
+ * Gets all pages from a Notion database and parses them into a more usable format.
+ * Accepts a generic type, which is generated for you after running setup in notion-on-next.
+ * The generic type should be a version of PageObjectResponse, but with your database's properties.
+ */
 export const getParsedPages = cache(async <Type>(databaseId: string) => {
   const pages = await getPages(databaseId);
   const parsedPages = await parsePages<Type>(pages);
