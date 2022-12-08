@@ -1,0 +1,13 @@
+{
+  "databases": {
+    "12c9bf14-4f9a-429b-8fff-d63c58694c54": {
+      "id": "12c9bf14-4f9a-429b-8fff-d63c58694c54",
+      "name": "Dogs"
+    },
+    "5b3247dc-63b8-4fd1-b610-5e5a8aabd397": {
+      "id": "5b3247dc-63b8-4fd1-b610-5e5a8aabd397",
+      "name": "Programming"
+    }
+  },
+  "typesFolderPath": "./types"
+}

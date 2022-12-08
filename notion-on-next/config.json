@@ -1,8 +1,0 @@
-{
-  "databases": {
-    "blog": {
-      "databaseId": "5b3247dc63b84fd1b6105e5a8aabd397"
-    }
-  },
-  "typesPath": "../types"
-}
