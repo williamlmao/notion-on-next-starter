@@ -42,7 +42,7 @@ export default function Home() {
                   description="You can use notion-on-next for content other than blog posts too! This example displays a database of dog breed info."
                 />
                 <Card
-                  url="https://github.com/williamlmao/notion-on-next-template"
+                  url="https://notion-on-next-starter.vercel.app/programming/Notion-on-next-Supported-Blocks-Examples"
                   title={"Supported Block Examples"}
                   description="Clone this repo and follow the setup instructions to connect and deploy your app in minutes!"
                 />
