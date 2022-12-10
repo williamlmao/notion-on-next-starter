@@ -1,10 +1,12 @@
 import {
   PageObjectResponse,
   SelectPropertyItemObjectResponse,
-  NumberPropertyItemObjectResponse,
-  TitlePropertyItemObjectResponse,
   RichTextItemResponse,
+  NumberPropertyItemObjectResponse,
+  UrlPropertyItemObjectResponse,
+  TitlePropertyItemObjectResponse,
   MultiSelectPropertyItemObjectResponse,
+  RichTextPropertyItemObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 
 export interface NotionOnNextPageObjectResponse extends PageObjectResponse {
@@ -24,14 +26,15 @@ export type DogsPageObjectResponse = NotionOnNextPageObjectResponse & {
   properties: {
     "Fur Type": SelectPropertyItemObjectResponse;
     Type: SelectPropertyItemObjectResponse;
+    "Photo By": RichTextPropertyItemObjectResponse;
     "Average Weight (lbs)": NumberPropertyItemObjectResponse;
+    "Photo by URL": UrlPropertyItemObjectResponse;
     Name: TitlePropertyItemObjectResponse;
   };
 };
-
 export type ProgrammingPageObjectResponse = NotionOnNextPageObjectResponse & {
   properties: {
-    Description: RichTextItemResponse;
+    Description: RichTextPropertyItemObjectResponse;
     Tags: MultiSelectPropertyItemObjectResponse;
     Name: TitlePropertyItemObjectResponse;
   };

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { mediaMapInterface, NotionPageBody } from "notion-on-next";
-import "notion-on-next/components/Block/block.css";
+
 import React from "react";
 import _mediaMap from "../../../public/notion-media/media-map.json";
 import { ProgrammingPageObjectResponse } from "../../../types/notion-on-next.types";

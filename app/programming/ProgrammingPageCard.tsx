@@ -12,20 +12,22 @@ export const ProgrammingPageCard = ({
   page: ProgrammingPageObjectResponse;
   databaseId: string;
 }) => {
-  //   console.log(mediaMap[databaseId]?.[page.id]>.cover, databaseId, page.id);
   return (
-    <Link href={`/blog/${page.slug}`} key={page.id}>
-      <div className="flex flex-col md:flex-row outline outline-2 outline-black rounded-md mx-6 md:mx-12 hover:shadow-xl hover:outline-4">
-        <Image
-          alt={page.title || "Cover Image for " + page.id}
-          src={mediaMap[databaseId]?.[page.id]?.cover}
-          className="h-auto w-full md:w-1/2 object-cover"
-          width={300}
-          height={300}
-        />
-        <div className="p-4 flex flex-col gap-4">
+    <Link href={`/programming/${page.slug}`} key={page.id}>
+      <div className="flex flex-col md:flex-row shadow-sm hover:shadow-lg  rounded-md outline-gray-100  outline-1 outline transition ease-in-out hover:-translate-y-1">
+        <div className="md:w-1/2 h-[300px]  overflow-hidden">
+          <Image
+            alt={page.title || "Cover Image for " + page.id}
+            src={mediaMap[databaseId]?.[page.id]?.cover}
+            className="h-full w-full rounded-t-md md:rounded-l-md  md:rounded-tr-none object-cover object-center"
+            width={800}
+            height={800}
+          />
+        </div>
+
+        <div className="p-4 flex flex-col gap-4 md:w-1/2">
           <div className="text-lg lg:text-2xl font-semibold">{page.title}</div>
-          <div className="">
+          <div className="text-gray-400">
             {new Date(page.created_time).toLocaleDateString()}
           </div>
           <div className="">

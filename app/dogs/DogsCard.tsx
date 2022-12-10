@@ -12,30 +12,46 @@ export const DogsPageCard = ({
   page: DogsPageObjectResponse;
   databaseId: string;
 }) => {
+  console.dir(page, { depth: null });
   return (
-    <Link href={`/dogs/${page.slug}`} key={page.id}>
-      <div className="flex flex-col md:flex-row outline outline-2 outline-black rounded-md mx-6 md:mx-12 hover:shadow-xl hover:outline-4">
-        <Image
-          alt={page.title || "Cover Image for " + page.id}
-          src={mediaMap[databaseId]?.[page.id]?.cover}
-          className="h-auto w-full md:w-1/2 object-cover"
-          width={300}
-          height={300}
-        />
-        <div className="p-4 flex flex-col gap-4">
+    <div className="w-[350px] h-[350px] relative group">
+      <div className="w-[350px] h-[350px] rounded-md absolute group-hover:bg-black opacity-70 text-white transition ease-in-out"></div>
+      <div className="w-[350px] h-[350px] absolute text-white">
+        <div className="opacity-0 group-hover:opacity-100 p-4 transition ease-in-out">
           <div className="text-lg lg:text-2xl font-semibold">{page.title}</div>
-          <div className="">
-            <span
-              className={`mr-2 px-2 py-1 rounded-lg text-white`}
-              // can't use template literal to pull tag.color into a tailwind class, so we have to use the style prop.
-              style={{ backgroundColor: page.properties.Type.select?.color }}
-              key={page.properties.Type.select?.name}
-            >
+          <div>
+            Bred for{" "}
+            <span className={`lowercase`}>
               {page.properties.Type.select?.name}
             </span>
           </div>
+          <div>
+            Weighs{" "}
+            <span className={`lowercase`}>
+              {page.properties["Average Weight (lbs)"].number}
+            </span>{" "}
+            lbs on average
+          </div>
+        </div>
+        <div className="">
+          {page.properties["Photo by URL"].url && (
+            <a
+              className="absolute bottom-2 left-2 drop-shadow-2xl shadow-2xl hover:text-blue-200"
+              href={page.properties["Photo by URL"].url}
+            >
+              {/* @ts-ignore - Notion API is wrong about text types */}
+              Photo by {page.properties["Photo By"].rich_text[0]?.plain_text}
+            </a>
+          )}
         </div>
       </div>
-    </Link>
+      <Image
+        alt={page.title || "Cover Image for " + page.id}
+        src={mediaMap[databaseId]?.[page.id]?.cover}
+        className="w-[350px] h-[350px] object-cover rounded-md"
+        width={350}
+        height={350}
+      />
+    </div>
   );
 };
