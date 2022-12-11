@@ -12,7 +12,6 @@ export const DogsPageCard = ({
   page: DogsPageObjectResponse;
   databaseId: string;
 }) => {
-  console.dir(page, { depth: null });
   return (
     <div className="w-[350px] h-[350px] relative group">
       <div className="w-[350px] h-[350px] rounded-md absolute group-hover:bg-black opacity-70 text-white transition ease-in-out"></div>

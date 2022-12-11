@@ -1,24 +1,58 @@
 # Notion-on-next
 
-```
-WARNING: This repo uses Next 13, which is still in beta at time of writing. Use at your own risk.
-```
+> **Warning**
+> This repository uses Next.js version 13, which is currently in beta. Use at your own risk.
 
 # Setup
 
-1. `git clone https://github.com/williamlmao/notion-on-next-starter.git`
-2. `cd notion-on-next-starter`
-3. Create a new repo for yourself and [switch the remote](https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories) using `git remote set-url origin your_new_remote_url_here`
-4. Duplicate this page into your Notion account. It contains two databases used in this starter kit.
-5. [Create an integration](https://developers.notion.com/docs/create-a-notion-integration) with both of the databases.
-6. `npm install`
-7. Create .env file in your root directory and add `NOTION_KEY=yoursecret` (you should have gotten your secret in the step above)
-8. `npx non setup`. Enter the two database IDs that you duplicated when prompted.
-9. `npm run start`
+To get started, clone the repository and install its dependencies:
 
-You'll notice that the site can be somewhat slow when you are developing locally. This is because your local server is fetching data from the Notion API whenever you are refreshing or loading a new page. However, once you run a production build of the site, it will be super fast!
+```
+git clone https://github.com/williamlmao/notion-on-next-starter.git
+cd notion-on-next-starter
+npm install
+```
 
-From here, you can edit the databases to suit your needs. If you update any database properties, run `npx non types` to regenerate your types. After adding any images/videos, run: `npx non media`. [Media URLs from the Notion API expire after an hour](https://developers.notion.com/docs/working-with-files-and-media#retrieving-files-and-media-via-the-notion-api), which is why notion-on-next downloads all of your media to your public folder.
+Next, create a new repository for yourself and [set its remote URL](https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories) using the following command:
+
+```
+git remote set-url origin your_new_remote_url_here
+```
+
+Duplicate [this page](https://liuwill.notion.site/notion-on-next-3b6292c8a6fe4dbaa12f9af26cffe674) in your Notion account. It contains two databases that are used in this starter kit.
+
+Next, [create an integration](https://developers.notion.com/docs/create-a-notion-integration) and connect it to the page you just duplicated. Adding a connection at that page will automatically add the connection to both databases.
+
+Next, create a .env file in your root directory and add the following line to it, replacing 'yoursecret' with the secret you obtained when creating the integration:
+
+```
+NOTION_KEY=yoursecret
+```
+
+Next, run the following command to set up your databases:
+
+```
+npx non setup
+```
+
+You will be prompted to enter the IDs. You can find the IDs of your databases by clicking the share button in the top right corner of the database and copying the ID from the URL.
+
+Next, replace the databaseId in the following files with your database ID:
+
+- `app/programming/page.tsx`
+- `app/programming/[slug]/page.tsx`
+- `app/dogs/page.tsx`
+- `app/dogs/[slug]/page.tsx`
+
+Finally, start the development server with:
+
+```
+npm run start
+```
+
+You will notice that the site can be somewhat slow when you are developing locally. This is because your local server is fetching data from the Notion API whenever you refresh or load a new page. However, once you run a production build of the site, it will be much faster.
+
+From here, you can edit the databases to suit your needs. If you update any database properties, run npx non types to regenerate your types. After adding any images or videos, run: npx non media. Note that media URLs from the Notion API expire after one hour, so notion-on-next downloads all of your media to your public folder.
 
 # Understanding the code
 
