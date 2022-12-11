@@ -1,114 +1,44 @@
 # Notion-on-next
 
-A library to help you use Notion as a CMS in your Next 13 App.
-
-Why is this library just for Next 13? There are existing libraries out there to help you render Notion pages in React Apps. But I Notion and Next.js seemed like such an obvious pairing, I wanted to optimize the use together. Notion serves as a friendly CMS and Next takes that content and uses it to build static pages. The result is blazing fast pages. ISR makes this combo even more potent!
-
-[Callout]
-
-This library is built with Next 13, which is still experimental. Use this at your own risk. I cannot guarantee it will still work as Next 13 is updated and released.
+```
+WARNING: This repo uses Next 13, which is still in beta at time of writing. Use at your own risk.
+```
 
 # Setup
 
-## Notion Integration
+1. `git clone https://github.com/williamlmao/notion-on-next-starter.git`
+2. `cd notion-on-next-starter`
+3. Create a new repo for yourself and [switch the remote](https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories) using `git remote set-url origin your_new_remote_url_here`
+4. Duplicate this page into your Notion account. It contains two databases used in this starter kit.
+5. [Create an integration](https://developers.notion.com/docs/create-a-notion-integration) with both of the databases.
+6. `npm install`
+7. Create .env file in your root directory and add `NOTION_KEY=yoursecret` (you should have gotten your secret in the step above)
+8. `npx non setup`. Enter the two database IDs that you duplicated when prompted.
+9. `npm run start`
 
-blah blah blah
+You'll notice that the site can be somewhat slow when you are developing locally. This is because your local server is fetching data from the Notion API whenever you are refreshing or loading a new page. However, once you run a production build of the site, it will be super fast!
 
-## Install
+From here, you can edit the databases to suit your needs. If you update any database properties, run `npx non types` to regenerate your types. After adding any images/videos, run: `npx non media`. [Media URLs from the Notion API expire after an hour](https://developers.notion.com/docs/working-with-files-and-media#retrieving-files-and-media-via-the-notion-api), which is why notion-on-next downloads all of your media to your public folder.
 
-`npm install notion-on-next`
+# Understanding the code
 
-`npx notion-on-next setup`
+The starter kit is a fairly barebones Next 13 app. If you're not familiar with Next 13, check out the [Next 13 docs](https://beta.nextjs.org/docs/getting-started) to get started.
 
-This function will
+This starter kit is connected to two databases which translate to the routes:
 
-- Prompt you for a list of database IDs
-- It then generates a config file, notion-on-next.config.js
-- Create and download all images to a folder in /public
-- Generate types from your databases
+- localhost:3000/programing
+- localhost:3000/dogs
 
-## To Get a list of posts
+Each of these routes correspond to a `page.tsx` file. These `page.tsx` files are responsible for fetching all of the pages in in their respective database and rendering links to each page.
 
-In the example below, `BlogPageObjectResponse` was a type that was automatically generated from a database titled Blog. You should check the automatically generated types and pick the type that corresponds with the databaseId you are passing in.
+- /app/programing/page.tsx
+- /app/dogs/page.tsx
 
-```
-import { getParsedPages } from "../../notion-on-next";
-import { BlogPageObjectResponse } from "../../types/types";
-import { databaseId } from "./page";
+Within each /programming and /dogs, you'll more `page.tsx` files. These files are responsible for fetching the content for a single page from their respective database, and rendering it. They also contain the `generateStaticParams` function which is a Next 13 function that tells Next 13 which pages to generate at build time.
 
-const databaseId = "kdshfoishdfiosdhf"
+- /app/programing/[slug]/page.tsx | matching route: localhost:3000/programing/[slug]
+- /app/dogs/[slug]/page.tsx | matching route: localhost:3000/dogs/[slug]
 
-export default async function Blog() {
-  const pages = await getParsedPages<BlogPageObjectResponse>(databaseId);
-  return <div>{pages.map((page) => page.title)}</div>;
-}
-```
+# Using notion-on-next
 
-## Generating Static Pages (Indiviudal Pages)
-
-Notion-on-next is configured to work with slugs. These slugs are automatically generated and will be on any of your automatically generated `PageObjectResponse` types.
-
-In the example below, we do the following
-
-- Grab the slug from the route params
-- Get all of the pages from `getParsedPages`. Don't worry, `getParsedPages` is a cached function, so calling it again will not actually make another call to the notion api to fetch all of your pages. We have to do this because there is no way to pass the page id through `generateStaticParams` and the Notion API requires a page id to fetch a page.
-- Find the page with the matching slug
-
-```
-import { FC } from "react";
-import { getBlocks, getPages, getParsedPages } from "../../../notion-on-next";
-import { BlogPageObjectResponse } from "../../../types/types";
-import { use } from "react";
-import { databaseId } from "../page";
-import { notFound } from "next/navigation";
-import { data } from "autoprefixer";
-import { NotionPageBody } from "../../../notion-on-next/components/NotionPageBody";
-
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
-
-const BlogPage: FC<PageProps> = ({ params }) => {
-  const { slug } = params;
-  // This may seem like a roundabout way to retrieve the page, but getParsedPages is a per-request cached function. You can read more about it here https://beta.nextjs.org/docs/data-fetching/caching#preload-pattern-with-cache
-  // The reason why we have to get all of the pages and then filter is because the Notion API can only search for pages via page id and not slug.
-  const pages = use(getParsedPages<BlogPageObjectResponse>(databaseId));
-  const page = pages.find((page) => page.slug === slug);
-  if (!page) {
-    notFound();
-  }
-
-  return (
-    <div>
-      {/* {JSON.stringify(page)} */}
-      <NotionPageBody databaseId={databaseId} pageId={page.id} />
-    </div>
-  );
-};
-
-export default BlogPage;
-
-export async function generateStaticParams() {
-  const pages = await getParsedPages<BlogPageObjectResponse>(databaseId);
-  return pages.map((page) => ({
-    slug: page.slug,
-  }));
-}
-
-```
-
-You can do whatever you want with the data returned by `getBlocks`, or you can use some prebuilt components from this library to handle.
-
-`NotionPageBody`
-`Blocks`
-
-You can add `@notion-on-next/blocks.css` to handle the styling for you, or you can copy the componeont [LINK TO BLOCK COMPONENT] and add your own styling.
-
-Here is also a pre-styled version of the component with tailwind.
-
-# When should I trigger a re-build?
-
-- When you change the title of a page
-- WHen you add new media, photos or images
+You can find more documentation on all of the functions and components available in the [main notion-on-next repo](https://github.com/williamlmao/notion-on-next)

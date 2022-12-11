@@ -28,7 +28,7 @@ export default async function BlogPage({
     notFound();
   }
   const blocks = await cachedGetBlocks(page.id);
-
+  console.dir(blocks, { depth: null });
   return (
     <div className="p-8 md:p-12 max-w-[800px] mx-auto">
       <div className="">
